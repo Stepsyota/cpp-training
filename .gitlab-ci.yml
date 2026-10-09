@@ -1,0 +1,11 @@
+stages:
+  - test
+
+workshop::test:
+  stage: test
+  image: ubuntu:22.04
+  before_script:
+    - apt-get update && apt-get install -y cmake g++ make ninja
+  
+  script:
+    - cd cicd && chmod +x check.sh && ./check.sh

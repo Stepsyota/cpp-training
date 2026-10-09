@@ -1,0 +1,110 @@
+# Эталон упражнений 02–06. Имена jobs подставь под свои, если переименовал.
+
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+workshop:test:
+  stage: test
+  image: ubuntu:22.04
+  before_script:
+    - apt-get update && apt-get install -y cmake g++ make
+  script:
+    - cd cicd && chmod +x check.sh && ./check.sh
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+package:cpack:
+  stage: build
+  needs: ["workshop:test"]
+  image: ubuntu:22.04
+  before_script:
+    - apt-get update && apt-get install -y cmake g++ make fakeroot dpkg-dev
+  script:
+    - cd cicd
+    - cmake -S workshop -B build -DCMAKE_BUILD_TYPE=Release
+    - cmake --build build
+    - cd build && cpack
+    - ls -la
+  artifacts:
+    paths:
+      - cicd/build/*.deb
+      - cicd/build/*.tar.gz
+    expire_in: 1 week
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+package:deb-in-ubuntu:
+  stage: build
+  needs: ["workshop:test"]
+  image: docker:24
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+  script:
+    - docker run --rm
+        -v "${CI_PROJECT_DIR}/cicd:/work"
+        -w /work
+        ubuntu:22.04
+        bash -c '
+          set -euo pipefail
+          apt-get update
+          apt-get install -y cmake g++ make fakeroot dpkg-dev
+          cmake -S workshop -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+          cd build && cpack -G DEB
+        '
+    - ls -la cicd/build/
+  artifacts:
+    paths:
+      - cicd/build/*.deb
+    expire_in: 2 weeks
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+image:docker:
+  stage: build
+  needs: ["workshop:test"]
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_JOB_TOKEN" "$CI_REGISTRY"
+  script:
+    - docker build -f cicd/docker/Dockerfile
+        -t "$CI_REGISTRY_IMAGE/forge-cli:$CI_COMMIT_SHA"
+        cicd
+    - docker push "$CI_REGISTRY_IMAGE/forge-cli:$CI_COMMIT_SHA"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+deploy:manual:
+  stage: deploy
+  when: manual
+  needs:
+    - job: package:cpack
+      artifacts: true
+    - job: package:deb-in-ubuntu
+      artifacts: true
+    - job: image:docker
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_JOB_TOKEN" "$CI_REGISTRY"
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - ls -la cicd/build/
+    - docker pull "$CI_REGISTRY_IMAGE/forge-cli:$CI_COMMIT_SHA"
+    - echo "CD placeholder — scp .deb / docker pull на bare metal"
