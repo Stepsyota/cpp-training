@@ -1,6 +1,7 @@
 stages:
   - test
 
+
 workshop::test:
   stage: test
   image: ubuntu:22.04
