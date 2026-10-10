@@ -1,0 +1,11 @@
+[book]
+title = "Cpp Training — Том 4 — Async и coroutines"
+authors = ["stepsyota"]
+language = "ru"
+description = "std::async, future, promise, packaged_task, executors, coroutines C++20, выбор модели параллелизма."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]

@@ -1,0 +1,14 @@
+[book]
+# Без «:» и «+» в title — mdbook-epub именует .epub по title; «+» ломает имя файла.
+# На Kindle видно это название; серия различается по «Том N».
+title = "Cpp Training — Том 0 — Как пользоваться курсом"
+authors = ["stepsyota"]
+language = "ru"
+description = "Карта курса, репозиторий training, mdBook, Kindle, чат-репетитор."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]
+# Обложка не используется — на Kindle различаем тома по title выше.

@@ -70,6 +70,7 @@ bounded queue (`close` ≠ выкинуть стол); `std::move` как мет
 ```
 training/
   AGENTS.md                 ← этот файл
+  books/                    ← EPUB-тома; агент книги: books/BOOK-CONTEXT.md
   multithread/
     THEORY.md               ← теория, читать сверху вниз
     README.md, check.sh, CMakeLists.txt

@@ -1,0 +1,11 @@
+[book]
+title = "Cpp Training — Том 7 — Санитайзеры"
+authors = ["stepsyota"]
+language = "ru"
+description = "AddressSanitizer, UBSan, ThreadSanitizer на Fedora, флаги, отчёты, CMake, связь с multithread."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]

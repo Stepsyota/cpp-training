@@ -1,0 +1,11 @@
+[book]
+title = "Cpp Training — Том 2 — Лямбды"
+authors = ["stepsyota"]
+language = "ru"
+description = "Лямбда-выражения C++: захват, замыкания, C++17 и C++20, lifetime, STL и потоки."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]

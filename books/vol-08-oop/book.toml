@@ -1,0 +1,11 @@
+[book]
+title = "Cpp Training — Том 8 — ООП и SOLID"
+authors = ["stepsyota"]
+language = "ru"
+description = "Объектная модель C++17, инкапсуляция, полиморфизм, RAII, принципы SOLID."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]

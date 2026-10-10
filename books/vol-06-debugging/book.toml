@@ -1,0 +1,11 @@
+[book]
+title = "Cpp Training — Том 6 — Отладка GDB"
+authors = ["stepsyota"]
+language = "ru"
+description = "GDB на Fedora, breakpoints, стек, многопоточность, core dump, cgdb, отладчик в IDE."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]

@@ -1,0 +1,11 @@
+[book]
+title = "Cpp Training — Том 1 — Ключевые слова"
+authors = ["stepsyota"]
+language = "ru"
+description = "Ключевые слова C++: полный обзор, стандарты C++17/20/23, типичные заблуждения."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]

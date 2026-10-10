@@ -1,0 +1,11 @@
+[book]
+title = "Cpp Training — Том 3 — Многопоточность"
+authors = ["stepsyota"]
+language = "ru"
+description = "Потоки, гонки, mutex, condition_variable, atomics, memory order, happens-before, паттерны пула и очереди."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]

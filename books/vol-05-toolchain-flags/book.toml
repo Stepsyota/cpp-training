@@ -1,0 +1,11 @@
+[book]
+title = "Cpp Training — Том 5 — Toolchain и флаги"
+authors = ["stepsyota"]
+language = "ru"
+description = "GCC и Clang на Fedora, флаги, линковка, CMake, clangd; глава про отличия MSVC."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.epub]
