@@ -2,7 +2,7 @@ stages:
   - test
 
 
-workshop::test:
+workshop:test:
   stage: test
   image: ubuntu:22.04
 
@@ -11,3 +11,7 @@ workshop::test:
   
   script:
     - cd cicd && chmod +x check.sh && ./check.sh
+
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
