@@ -1,0 +1,7 @@
+build/
+cmake-build-*/
+*.deb
+*.rpm
+*.tar.gz
+packages/
+.cache/

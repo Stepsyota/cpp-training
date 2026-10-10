@@ -1,8 +1,8 @@
 # Контекст для агентов (`/home/stepsyota/training`)
 
-Этот репозиторий — личный тренажёр C++. Сейчас в нём один трек:
-**многопоточность** (`multithread/`). Файл нужен, чтобы новый чат не
-начинал с нуля и не ломал договорённости.
+Этот репозиторий — личный тренажёр C++. Сейчас два трека:
+**многопоточность** (`multithread/`) и **CI/CD в GitLab** (`cicd/`).
+Файл нужен, чтобы новый чат не начинал с нуля и не ломал договорённости.
 
 Язык общения с хозяином репозитория — **русский**. Идентификаторы в коде
 и публичные API упражнений — английские.
@@ -78,6 +78,15 @@ training/
     advanced/01..03         ← крупные модули
     solutions/              ← эталоны, не спойлерить зря
     build/                  ← cmake, в git не надо
+  cicd/
+    THEORY.md               ← GitLab CI/CD, арtefact'ы, CD
+    README.md, check.sh     ← check.sh пишет хозяин (упр. 01)
+    workshop/               ← учебный «продукт» (forge-cli)
+    beginner/01..06         ← check.sh, .gitlab-ci.yml, Docker…
+    advanced/               ← bare metal позже
+    docker/                 ← Dockerfile (упр. 04)
+    solutions/              ← эталоны после попытки
+    build/                  ← локальная сборка
 ```
 
 C++17, `-pthread`, CMake ≥ 3.16. Clangd смотрит `compile-commands-dir=build`.
@@ -144,6 +153,39 @@ cmake --build build --target 06_thread_pool   # или 01_rocket_launch …
 
 ---
 
+## Трек CI/CD (`cicd/`)
+
+GitLab CI, не GitHub Actions. Хозяин на работе: Docker-образ + несколько
+пакетов (CPack; часть пакетов — сборка внутри контейнеров под целевую ОС).
+Сейчас deploy **manual**; bare metal — `advanced/` позже.
+
+Знает bash, multistage Docker — базовый «что такое CI» не разжёвывать.
+**Флаги компиляции** — отдельный трек, не смешивать.
+
+### Как учить
+
+- **`cicd/check.sh`** — пишет **он** (упр. 01); в репо заглушка `exit 1`.
+  Не подменять готовым скриптом, пока не попросил проверку.
+- **`.gitlab-ci.yml`** — в **корне репо**; упражнения 02–06, подсказки в
+  `beginner/*/README.md`.
+- **`workshop/`** — готовый мини-продукт; не просит дописывать C++.
+- Эталоны: `cicd/solutions/` (check.sh, gitlab-ci.yml, Dockerfile).
+
+### Упражнения (порядок)
+
+| # | Папка | Суть |
+|---|--------|------|
+| 1 | `01_check_script` | свой `check.sh` для workshop |
+| 2 | `02_ci_gate` | stage test |
+| 3 | `03_cpack_artifact` | CPack → GitLab artifacts |
+| 4 | `04_container_image` | образ → Container Registry |
+| 5 | `05_cpack_in_container` | `.deb` внутри ubuntu-контейнера |
+| 6 | `06_cd_manual` | `when: manual`, tag, без пересборки |
+
+Теория: `cicd/THEORY.md` (pipeline, artifacts vs cache, immutable artifact).
+
+---
+
 ## Теория (`multithread/THEORY.md`)
 
 Живой конспект. Главы 1–8 — потоки, гонки, mutex, async/future/promise
@@ -187,3 +229,13 @@ cv, atomics/CAS. По ходу чата дописано:
 
 Если контекста мало — читать этот файл, потом `multithread/README.md` и
 `THEORY.md`, потом README конкретной папки.
+
+
+Темы, которые я хотел бы изучить:
+- CI/CD ← трек `cicd/` в работе
+- флаги компиляции
+- gdb
+- санитаризация
+- лямбда
+- асинхронность
+- ключевые слова C++

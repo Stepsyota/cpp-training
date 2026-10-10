@@ -1,0 +1,17 @@
+stages:
+  - test
+
+
+workshop:test:
+  stage: test
+  image: ubuntu:22.04
+
+  before_script:
+    - apt-get update && apt-get install -y cmake g++ make ninja-build
+  
+  script:
+    - cd cicd && chmod +x check.sh && ./check.sh
+
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
